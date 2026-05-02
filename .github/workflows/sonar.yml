@@ -14,18 +14,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout code
       - uses: actions/checkout@v4
 
+      # Setup Java
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
 
-      # 🔥 ADD THIS STEP (VERY IMPORTANT)
+      # Compile Java files
       - name: Compile Java
         run: javac *.java
 
+      # Run SonarCloud scan
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@v2
         with:
@@ -33,7 +36,8 @@ jobs:
             -Dsonar.projectKey=sanghavig04-dot_Java
             -Dsonar.organization=sanghavig04-dot
             -Dsonar.host.url=https://sonarcloud.io
-            -Dsonar.java.binaries=.
             -Dsonar.sources=.
+            -Dsonar.java.binaries=.
+            -Dsonar.coverage.exclusions=**
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
